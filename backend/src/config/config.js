@@ -29,4 +29,5 @@ module.exports = {
     secret: envVars.JWT_SECRET,
     accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
   },
+  calendarific_api_key: envVars.CALENDARIFIC_API_KEY,
 };
