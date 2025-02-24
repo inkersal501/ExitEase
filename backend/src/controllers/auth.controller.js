@@ -14,14 +14,15 @@ const login = async (req, res) => {
 
     if(username =="" || password =="")
         res.status(500).send({"message": "Invalid Request"});
-    
-    try {
-        const user = await authService.login(username, password);
-        const token = await tokenService.generateAuthTokens(user);
-        res.status(200).send(token);
-    } catch (error) { 
-        res.status(500).send({"message": error.message});
-    }    
+    else{
+        try {
+            const user = await authService.login(username, password);
+            const token = await tokenService.generateAuthTokens(user);
+            res.status(200).send(token);
+        } catch (error) { 
+            res.status(500).send({"message": error.message});
+        }    
+    }
 };
 
 module.exports = {register, login};
