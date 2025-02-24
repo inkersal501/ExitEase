@@ -20,4 +20,5 @@ const auth = async (req, res, next) => {
     .then(() => next())
     .catch((err) => next(err));
 }; 
-module.exports = auth;
+
+module.exports = {auth};

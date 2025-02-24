@@ -1,7 +1,8 @@
 const router = require("express").Router();
-const auth  = require("../middlewares/auth.middleware");
-const controller = require("../controllers/user.controller");
+const {authMiddleware}  = require("../middlewares");
+const {userController} = require("../controllers");
 
-router.post("/resign", auth, controller.resign);
+router.post("/resign", authMiddleware.auth, userController.resign);
+router.post("/responses", authMiddleware.auth, userController.responses);
 
 module.exports = router;

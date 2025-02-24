@@ -3,4 +3,5 @@ const checkAdmin = (req, res, next) => {
         throw new Error("Unauthorized access");
     next();
 };
-module.exports = checkAdmin;
+
+module.exports = {checkAdmin};

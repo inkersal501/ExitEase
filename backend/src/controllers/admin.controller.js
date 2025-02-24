@@ -1,9 +1,9 @@
-const adminService = require("../services/admin.service");
+const {adminService} = require("../services");
 
 const getResignations = async (req, res) => { 
     try {
         const resignations = await adminService.getResignations();
-        res.status(200).send({data: resignations});
+        res.status(200).send(resignations);
     } catch (error) {
         res.status(500).send({"message": error.message});
     } 
@@ -11,12 +11,20 @@ const getResignations = async (req, res) => {
 
 const concludeResignation =  async (req, res) => { 
     try {
-        const resignation = await adminService.concludeResignation(req);
+        await adminService.concludeResignation(req);
         res.status(200).send();
     } catch (error) {
         res.status(500).send({"message": error.message});
     }
-
 };
 
-module.exports = { getResignations, concludeResignation };
+const getExitresponses = async (req, res) => { 
+    try {
+        const exitResponses = await adminService.getExitresponses();
+        res.status(200).send(exitResponses);
+    } catch (error) {
+        res.status(500).send({"message": error.message});
+    } 
+};
+
+module.exports = { getResignations, concludeResignation, getExitresponses };

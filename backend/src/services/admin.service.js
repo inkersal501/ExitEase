@@ -1,12 +1,11 @@
 const { Resignation } = require("../models");
 
-
 const getResignations = async () => {
     try {
         const resignations = await Resignation.find({}, "_id employeeId lwd reason status");
         if(!resignations)
             throw new Error(`No resignations found`);
-        return resignations;
+        return {data: resignations};
     } catch (error) {
         throw new Error(`Error getting resignations: ${error.message}`);
     }
@@ -31,4 +30,15 @@ const concludeResignation =  async (req) => {
     }
 };
 
-module.exports = { getResignations, concludeResignation };
+const getExitresponses = async () => {
+    try {
+        const exitEesponses = await Resignation.find({}, "employeeId responses");
+        if(!exitEesponses)
+            throw new Error(`No Exit Responses found`);
+        return {data: exitEesponses};
+    } catch (error) {
+        throw new Error(`Error getting Exit Responses: ${error.message}`);
+    }
+};
+
+module.exports = { getResignations, concludeResignation, getExitresponses };

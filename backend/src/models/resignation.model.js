@@ -1,4 +1,3 @@
-const { required } = require("joi");
 const mongoose = require("mongoose");
 
 const resignationSchema = new mongoose.Schema(
@@ -15,10 +14,15 @@ const resignationSchema = new mongoose.Schema(
       default: "Pending",
     },
     reason: {
-      type: String,
-      required: true,
+      type: String
     },
     exitDate: { type: Date },
+    responses: [
+      {
+        questionText: { type: String},
+        response: { type: String }
+      }
+    ]
   },
   { timestamps: true }
 );

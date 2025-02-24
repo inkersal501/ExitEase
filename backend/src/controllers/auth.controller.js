@@ -1,10 +1,8 @@
-const authService = require("../services/auth.service");
-const userService = require("../services/user.service");
-const tokenService = require("../services/token.service");
+const {authService, userService, tokenService} = require("../services"); 
 
 const register = async (req, res) => {
     try {
-        const user = await userService.register(req);
+        await userService.register(req);
         res.status(201).send({"message": "User registered successfully"});
     } catch (error) { 
         res.status(500).send({"message": error.message});
