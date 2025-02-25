@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Card, CardContent, TextField, Button, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { API_URL } from "../config";
 
 const RegisterPage = () => {
-  const [form, setForm] = useState({ email: "", username: "", password: "" });
+  
+  const [form, setForm] = useState({ username: "", password: "" });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -18,16 +19,12 @@ const RegisterPage = () => {
     e.preventDefault();
     try {
       const response = await axios.post(`${API_URL}/auth/register`, form);
-      console.log(response);
       if (response.status === 201) {
-        toast.success("Registration successful!");
+        toast.success("Registration successful! Please login.");
         navigate("/");
-      } else {
-        toast.error(`Registration failed: ${response.data.message}`);
       }
     } catch (error) {
       toast.error(error.response.data.message);
-      console.error("Error:", error);
     }
   };
 
@@ -45,40 +42,34 @@ const RegisterPage = () => {
       >
         <Card sx={{ maxWidth: 400, width: "100%", padding: 3, boxShadow: 3 }}>
           <CardContent>
-            <Typography variant="h5" align="center" gutterBottom>
-              Employee Registration
+            <Typography variant="h5" align="center">
+              Register
             </Typography>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <form onSubmit={handleSubmit}>
               <TextField
-                label="Email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
                 fullWidth
-                required
-              />
-              <TextField
                 label="Username"
                 name="username"
                 value={form.username}
                 onChange={handleChange}
-                fullWidth
-                required
+                margin="normal"
               />
               <TextField
-                label="Password"
+                fullWidth
                 type="password"
+                label="Password"
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                fullWidth
-                required
+                margin="normal"
               />
               <Button type="submit" variant="contained" color="primary" fullWidth>
                 Register
               </Button>
             </form>
-            <Typography variant="body2" align="center" marginTop={2}>Already Registered?{" "}<Link to="/">Login Here.</Link></Typography>
+            <Typography mt={2}>
+              Already have an account? <Link to="/">Login here.</Link>
+            </Typography>
           </CardContent>
         </Card>
       </div>
