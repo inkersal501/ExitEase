@@ -96,6 +96,7 @@ const HRDashboard = () => {
                 <TableRow sx={{}}>
                   <TableCell sx={{fontWeight:"bold",color:"#777"}}>Employee</TableCell>
                   <TableCell sx={{fontWeight:"bold",color:"#777"}}>Last Working Day</TableCell>
+                  <TableCell sx={{fontWeight:"bold",color:"#777"}}>Reason</TableCell>
                   <TableCell sx={{fontWeight:"bold",color:"#777"}}>Status</TableCell>
                   <TableCell sx={{fontWeight:"bold",color:"#777"}}>Actions</TableCell>
                 </TableRow>
@@ -108,6 +109,7 @@ const HRDashboard = () => {
                       {resignation.employeeId?.email}
                     </TableCell>
                     <TableCell>{formatDate(resignation.lwd)}</TableCell>
+                    <TableCell>{resignation.reason}</TableCell>
                     <TableCell>{resignation.status}</TableCell>
                     <TableCell>
                       {resignation.status === "Pending" &&
