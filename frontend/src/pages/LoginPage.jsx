@@ -10,7 +10,7 @@ import { API_URL } from "../config";
 
 const LoginPage = () => {
   
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,12 +20,19 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if(!form.email){
+      toast.error("Invalid Email."); return;
+    } else if(!form.password){
+      toast.error("Invalid Password."); return;
+    }  
+    
     try {
       const response = await axios.post(`${API_URL}/auth/login`, form);
       if (response.status === 200) {
-        const { token, role } = response.data;
+        const { token, role, username } = response.data;
         localStorage.setItem("token", token);
-        dispatch(login({ token, role, username:form.username }));
+        dispatch(login({ token, role, username }));
         toast.success("Login successful!");
 
         if (role === "HR") {
@@ -51,17 +58,18 @@ const LoginPage = () => {
           backgroundColor: "#f5f5f5",
         }}
       >
-        <Card sx={{ maxWidth: 400, width: "100%", padding: 3, boxShadow: 3 }}>
+        <Card sx={{ maxWidth: 400, width: "100%", padding: 3, boxShadow: 3, borderRadius:"10px" }}>
           <CardContent>
-            <Typography variant="h5" align="center">
-              Login
+            <Typography variant="h3" align="center" sx={{margin:"10px 0px"}}>
+             <Typography variant="span" fontSize={14}>Employee</Typography> Login
             </Typography>
             <form onSubmit={handleSubmit}>
               <TextField
                 fullWidth
-                label="Username"
-                name="username"
-                value={form.username}
+                type="email"
+                label="Email"
+                name="email"
+                value={form.email}
                 onChange={handleChange}
                 margin="normal"
               />
@@ -74,12 +82,12 @@ const LoginPage = () => {
                 onChange={handleChange}
                 margin="normal"
               />
-              <Button type="submit" variant="contained" color="primary" fullWidth>
+              <Button type="submit" variant="contained" color="primary" fullWidth sx={{margin:"10px 0px"}}>
                 Login
               </Button>
             </form>
             <Typography mt={2}>
-              Not Registered? <Link to="/register">Register Here.</Link>
+              Not Registered? <Link to="/register" sx={{color:"#222"}}>Register Here.</Link>
             </Typography>
           </CardContent>
         </Card>

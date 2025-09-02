@@ -1,17 +1,18 @@
 import { useSelector } from "react-redux";
 import { selectUser } from "../redux/authSlice";
-import { Typography, Button, Container, TextField, Box } from "@mui/material";
+import { Typography, Button, Container, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { API_URL } from "../config";
 
 const ExitQuestionnaire = () => {
   
   const user = useSelector(selectUser);
   const navigate = useNavigate();
+  const [resignationId, setResignationId] = useState("");
 
   const [responses, setResponses] = useState([
     { questionText: "What prompted you to resign?", response: "" },
@@ -21,8 +22,7 @@ const ExitQuestionnaire = () => {
   ]);
 
   if (!user || !localStorage.getItem("resignationId")) {
-    navigate("/");
-    return null;
+    navigate("/"); 
   }
 
   const handleChange = (index, value) => {
@@ -35,8 +35,8 @@ const ExitQuestionnaire = () => {
     try {
       await axios.post(
         `${API_URL}/user/responses`,
-        { responses },
-        { headers: { Authorization: `${localStorage.getItem("token")}` } }
+        { responses, resignationId },
+        { headers: { Authorization: `${user.token}` } }
       );
       toast.success("Exit interview submitted successfully!");
       localStorage.removeItem("resignationId");
@@ -46,6 +46,26 @@ const ExitQuestionnaire = () => {
     }
   };
 
+  useEffect(() => {
+    const checkResign = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/user/check-resign`,
+          { headers: { Authorization: `${user.token}` } }
+        );
+
+        if(response.data.submitted){ 
+          setResignationId(response.data.resignationId);
+        } 
+
+      } catch (error) {
+        console.log(error);
+      }        
+    };
+    checkResign();
+    //eslint-disable-next-line
+  }, []);
+  
   return (
     <>
       <Navbar />
@@ -75,7 +95,7 @@ const ExitQuestionnaire = () => {
             key={index}
             label={item.questionText}
             multiline
-            rows={3}
+            rows={2}
             fullWidth
             margin="normal"
             value={item.response}

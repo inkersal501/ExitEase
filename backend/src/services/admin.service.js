@@ -2,7 +2,7 @@ const { Resignation } = require("../models");
 
 const getResignations = async () => {
     try {
-        const resignations = await Resignation.find({}, "_id employeeId lwd reason status");
+        const resignations = await Resignation.find({}, "_id employeeId lwd reason status").populate("employeeId", "username email");
         if(!resignations)
             throw new Error(`No resignations found`);
         return {data: resignations};
@@ -12,14 +12,14 @@ const getResignations = async () => {
 };
 
 const concludeResignation =  async (req) => { 
-    const { resignationId, approved, lwd } = req.body;
+    const { resignationId, approved } = req.body;
     try {
         const resignation = await Resignation.findById(resignationId);
         if(!resignation)
             throw new Error(`Resignation not found`);
         if(approved){
             resignation.status = "Approved";
-            resignation.exitDate = lwd;
+            resignation.exitDate = resignation.lwd;
         } else {
             resignation.status = "Rejected";
         }

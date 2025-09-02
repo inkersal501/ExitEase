@@ -1,11 +1,11 @@
-const {User} = require("../models");
+const { User } = require("../models");
 
-const login = async (username, password)=>{
-    const user = await User.findOne({username});
+const login = async (email, password)=>{
+    const user = await User.findOne({email});
     if(!user)
         throw new Error('User not found');
  
-    if(user && !(await user.isPasswordMatch(password)))
+    if(!(await user.isPasswordMatch(password)))
         throw new Error('Incorrect Password');
     
     return user;

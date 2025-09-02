@@ -9,6 +9,14 @@ const resign = async (req, res) => {
     }    
 };
 
+const checkResign = async (req, res) =>{
+    try {
+        const result = await userService.checkResign(req.user.id);
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(500).send({"message": error.message});
+    } 
+};
 
 const responses = async (req, res) => {
     try {
@@ -20,4 +28,4 @@ const responses = async (req, res) => {
 };
 
 
-module.exports = {resign, responses};
+module.exports = {resign, checkResign, responses};

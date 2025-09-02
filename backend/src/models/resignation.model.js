@@ -10,7 +10,7 @@ const resignationSchema = new mongoose.Schema(
     lwd: { type: Date, required: true },
     status: {
       type: String,
-      enum: ["Pending", "Approved", "Rejected"],
+      enum: ["Pending", "Approved", "Rejected", "Exit"],
       default: "Pending",
     },
     reason: {

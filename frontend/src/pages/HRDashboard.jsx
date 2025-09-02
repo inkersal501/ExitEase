@@ -15,8 +15,7 @@ const HRDashboard = () => {
   const [resignations, setResignations] = useState([]);
 
   if (!user || user.role !== "HR") {
-    navigate("/");
-    return null;
+    navigate("/"); 
   }
 
   useEffect(() => {
@@ -50,18 +49,32 @@ const HRDashboard = () => {
     }
   };
 
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   return (
     <>
       <Navbar />
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          flexDirection:"column",
+          justifyContent: "start",
+          alignItems: "start",
           minHeight: "100vh",
           backgroundColor: "#f5f5f5",
         }}
-      >
+      > 
+      <div style={{textAlign:"left", padding:"20px"}}>
+        <Typography variant="h6" sx={{textAlign:"left"}} gutterBottom color="#444">
+          HR Dashboard
+        </Typography>
+      </div>
         <Container
           sx={{
             textAlign: "center",
@@ -70,9 +83,9 @@ const HRDashboard = () => {
             borderRadius: "8px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
           }}
-        >
-        <Typography variant="h4" gutterBottom color="#444">
-          HR Dashboard - Resignation Requests
+        > 
+        <Typography variant="h5" gutterBottom color="#444" sx={{marginBottom:"10px"}}>
+         Employee&apos;s Resignation Requests
         </Typography>
         {resignations.length === 0 ? (
           <Typography>No resignation requests found.</Typography>
@@ -80,20 +93,25 @@ const HRDashboard = () => {
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
-                <TableRow>
-                  <TableCell>Employee ID</TableCell>
-                  <TableCell>Last Working Day</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Actions</TableCell>
+                <TableRow sx={{}}>
+                  <TableCell sx={{fontWeight:"bold",color:"#777"}}>Employee</TableCell>
+                  <TableCell sx={{fontWeight:"bold",color:"#777"}}>Last Working Day</TableCell>
+                  <TableCell sx={{fontWeight:"bold",color:"#777"}}>Status</TableCell>
+                  <TableCell sx={{fontWeight:"bold",color:"#777"}}>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {resignations.map((resignation) => (
                   <TableRow key={resignation._id}>
-                    <TableCell>{resignation.employeeId}</TableCell>
-                    <TableCell>{resignation.lwd}</TableCell>
+                    <TableCell><b>{resignation.employeeId?.username}</b>
+                      <br />
+                      {resignation.employeeId?.email}
+                    </TableCell>
+                    <TableCell>{formatDate(resignation.lwd)}</TableCell>
                     <TableCell>{resignation.status}</TableCell>
                     <TableCell>
+                      {resignation.status === "Pending" &&
+                      <>
                       <Button
                         variant="contained"
                         color="success"
@@ -109,6 +127,7 @@ const HRDashboard = () => {
                       >
                         Reject
                       </Button>
+                      </>}
                     </TableCell>
                   </TableRow>
                 ))}

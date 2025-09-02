@@ -4,8 +4,7 @@ import { selectUser } from "./redux/authSlice";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
-import HRDashboard from "./pages/HRDashboard";
-import ResignationPage from "./pages/ResignationPage";
+import HRDashboard from "./pages/HRDashboard"; 
 import ViewExitResponses from "./pages/ViewExitResponses";
 import ExitQuestionnaire from "./pages/ExitQuestionnaire";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -33,15 +32,7 @@ const App = () => {
               <HRDashboard />
             </ProtectedRoute>
           } 
-        />
-        <Route 
-          path="/resign" 
-          element={
-            <ProtectedRoute allowedRoles={["Employee"]}>
-              <ResignationPage />
-            </ProtectedRoute>
-          } 
-        />
+        /> 
         <Route 
           path="/exit-questionnaire" 
           element={
