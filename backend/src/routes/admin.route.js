@@ -2,8 +2,10 @@ const router = require("express").Router();
 const {adminController} = require("../controllers");
 const {adminMiddleware, authMiddleware} = require("../middlewares");
 
-router.get("/resignations", authMiddleware.auth, adminMiddleware.checkAdmin,  adminController.getResignations);
-router.put("/conclude_resignation", authMiddleware.auth, adminMiddleware.checkAdmin, adminController.concludeResignation);
-router.get("/exit_responses", authMiddleware.auth, adminMiddleware.checkAdmin,  adminController.getExitresponses);
+router.use(authMiddleware.auth);
+router.use(adminMiddleware.checkAdmin);
+router.get("/resignations", adminController.getResignations);
+router.put("/conclude_resignation", adminController.concludeResignation);
+router.get("/exit_response/:resignationId", adminController.getExitresponse);
 
 module.exports = router;

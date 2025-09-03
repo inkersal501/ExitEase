@@ -30,15 +30,15 @@ const concludeResignation =  async (req) => {
     }
 };
 
-const getExitresponses = async () => {
+const getExitresponse = async (resignationId) => {
     try {
-        const exitEesponses = await Resignation.find({}, "employeeId responses");
-        if(!exitEesponses)
+        const exitEesponse = await Resignation.findOne({_id: resignationId, status: "Exit"}).populate("employeeId", "username email");
+        if(!exitEesponse)
             throw new Error(`No Exit Responses found`);
-        return {data: exitEesponses};
+        return exitEesponse;
     } catch (error) {
         throw new Error(`Error getting Exit Responses: ${error.message}`);
     }
 };
 
-module.exports = { getResignations, concludeResignation, getExitresponses };
+module.exports = { getResignations, concludeResignation, getExitresponse };

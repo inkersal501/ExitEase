@@ -27,9 +27,11 @@ const Navbar = () => {
   return (
     <AppBar position="static" sx={{ backgroundColor: "#1976d2" }}>
       <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: "bold" }}>
+        
+        <Typography variant="h6" sx={{ flexGrow: 2, fontWeight: "bold", cursor:"pointer" }} onClick={()=>navigate("/")}>
           Exit Ease <Typography variant="span" fontSize={14}>(Employee Resignation Management)</Typography>
-        </Typography>
+          {user && <Typography variant="span" sx={{background:"#fff", color:"#1976d2", marginLeft:"10px", borderRadius:"10px",padding:"5px"}}>{user?.role}</Typography> }
+        </Typography> 
         <div>
         {user ? (
           <Box display="flex" alignItems="center">
@@ -44,7 +46,7 @@ const Navbar = () => {
               </Avatar>
               <Typography>{user.username}</Typography>
             </Box>
-
+            
             {/* Dropdown Menu */}
             <Menu
               anchorEl={anchorEl}
@@ -62,9 +64,14 @@ const Navbar = () => {
             </Menu>
           </Box>
         ) : (
-          <Button color="inherit" sx={{border:"1px solid #fff", padding: "6px 20px"}} onClick={() => navigate("/")}>
-            Login
-          </Button>
+          <Box sx={{display:"flex", gap:"10px"}}>
+            <Button color="inherit" sx={{border:"1px solid #fff", padding: "6px 20px"}} onClick={() => navigate("/")}>
+              Login
+            </Button>
+            <Button color="inherit" sx={{border:"1px solid #fff", padding: "6px 20px"}} onClick={() => navigate("/register")}>
+              Register
+            </Button>
+          </Box>
         )}
         </div>
       </Toolbar>

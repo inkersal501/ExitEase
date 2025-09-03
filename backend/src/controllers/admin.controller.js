@@ -18,13 +18,14 @@ const concludeResignation =  async (req, res) => {
     }
 };
 
-const getExitresponses = async (req, res) => { 
+const getExitresponse = async (req, res) => { 
+    const {resignationId} = req.params;
     try {
-        const exitResponses = await adminService.getExitresponses();
-        res.status(200).send(exitResponses);
+        const exitResponse = await adminService.getExitresponse(resignationId);
+        res.status(200).send(exitResponse);
     } catch (error) {
         res.status(500).send({"message": error.message});
     } 
 };
 
-module.exports = { getResignations, concludeResignation, getExitresponses };
+module.exports = { getResignations, concludeResignation, getExitresponse };

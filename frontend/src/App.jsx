@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import HRDashboard from "./pages/HRDashboard"; 
-import ViewExitResponses from "./pages/ViewExitResponses";
+import ViewExitResponse from "./pages/ViewExitResponse";
 import ExitQuestionnaire from "./pages/ExitQuestionnaire";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -15,7 +15,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={!user ? <LoginPage /> : user.role === "HR" ? <Navigate to="/hr-dashboard" /> : <Navigate to="/dashboard" />} />
+        <Route path="/" element={!user ? <LoginPage /> : (user.role === "HR" ? <Navigate to="/hr-dashboard" /> : <Navigate to="/dashboard" />)} />
         <Route path="/register" element={<RegisterPage />} />
         <Route 
           path="/dashboard" 
@@ -42,10 +42,10 @@ const App = () => {
           } 
         />
         <Route 
-          path="/exit-responses" 
+          path="/exit-response/:resignationId" 
           element={
             <ProtectedRoute allowedRoles={["HR"]}>
-              <ViewExitResponses />
+              <ViewExitResponse />
             </ProtectedRoute>
           } 
         />

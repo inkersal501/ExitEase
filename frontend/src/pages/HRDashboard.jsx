@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { selectUser } from "../redux/authSlice";
 import { Typography, Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -23,7 +23,7 @@ const HRDashboard = () => {
     const fetchResignations = async () => {
       try {
         const response = await axios.get(`${API_URL}/admin/resignations`, {
-          headers: { Authorization: `${localStorage.getItem("token")}` },
+          headers: { Authorization: `${user.token}` },
         });
         setResignations(response.data.data);
       } catch (error) {
@@ -31,7 +31,7 @@ const HRDashboard = () => {
       }
     };
     fetchResignations();
-
+  //eslint-disable-next-line
   }, []);
 
   const handleDecision = async (resignationId, approved, lwd) => { 
@@ -39,11 +39,16 @@ const HRDashboard = () => {
       await axios.put(
         `${API_URL}/admin/conclude_resignation`,
         { resignationId, approved, lwd },
-        { headers: { Authorization: `${localStorage.getItem("token")}` } }
+        { headers: { Authorization: `${user.token}` } }
       );
 
       toast.success(approved ? "Resignation approved!" : "Resignation rejected!");
-      setResignations(resignations.filter((res) => res._id !== resignationId));
+      const updated = resignations.map((res) => {
+        if(res._id === resignationId){
+          res.status = approved ? "Approved" : "Rejected";
+        }
+      })
+      setResignations(updated);
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -70,17 +75,14 @@ const HRDashboard = () => {
           backgroundColor: "#f5f5f5",
         }}
       > 
-      <div style={{textAlign:"left", padding:"20px"}}>
-        <Typography variant="h6" sx={{textAlign:"left"}} gutterBottom color="#444">
-          HR Dashboard
-        </Typography>
+      <div style={{textAlign:"left", padding:"20px"}}> 
       </div>
         <Container
           sx={{
             textAlign: "center",
             padding: "4rem 2rem",
             backgroundColor: "#fff",
-            borderRadius: "8px",
+            borderRadius: "10px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
           }}
         > 
@@ -130,6 +132,7 @@ const HRDashboard = () => {
                         Reject
                       </Button>
                       </>}
+                      {resignation.status === "Exit" && <Link to={`/exit-response/${resignation._id}`}>Exit Interview Response</Link>}
                     </TableCell>
                   </TableRow>
                 ))}
