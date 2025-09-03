@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, TextField, Button, Typography } from "@mui/material";
+import { Card, CardContent, TextField, Button, Typography, Box } from "@mui/material";
 import Navbar from "../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -49,8 +49,8 @@ const LoginPage = () => {
   return (
     <>
       <Navbar />
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           minHeight: "100vh",
           justifyContent: "center",
@@ -91,7 +91,7 @@ const LoginPage = () => {
             </Typography>
           </CardContent>
         </Card>
-      </div>
+      </Box>
     </>
   );
 };

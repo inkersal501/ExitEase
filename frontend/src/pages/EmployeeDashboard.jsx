@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, updateResignationStatus } from "../redux/authSlice";
-import { Typography, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Typography, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -90,8 +90,8 @@ const EmployeeDashboard = () => {
   return (
     <>
       <Navbar />
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -151,7 +151,7 @@ const EmployeeDashboard = () => {
             </>
           )}
         </Container>
-      </div>
+      </Box>
 
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle variant="h5" sx={{padding:"20px"}}>Submit Resignation</DialogTitle>

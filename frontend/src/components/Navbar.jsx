@@ -32,7 +32,7 @@ const Navbar = () => {
           Exit Ease <Typography variant="span" fontSize={14}>(Employee Resignation Management)</Typography>
           {user && <Typography variant="span" sx={{background:"#fff", color:"#1976d2", marginLeft:"10px", borderRadius:"10px",padding:"5px"}}>{user?.role}</Typography> }
         </Typography> 
-        <div>
+        <Box>
         {user ? (
           <Box display="flex" alignItems="center">
             <Box
@@ -73,7 +73,7 @@ const Navbar = () => {
             </Button>
           </Box>
         )}
-        </div>
+        </Box>
       </Toolbar>
     </AppBar>
   );

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { selectUser } from "../redux/authSlice";
-import { Typography, Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { Typography, Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
 import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import axios from "axios";
@@ -65,8 +65,8 @@ const HRDashboard = () => {
   return (
     <>
       <Navbar />
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           flexDirection:"column",
           justifyContent: "start",
@@ -74,9 +74,7 @@ const HRDashboard = () => {
           minHeight: "100vh",
           backgroundColor: "#f5f5f5",
         }}
-      > 
-      <div style={{textAlign:"left", padding:"20px"}}> 
-      </div>
+      >  
         <Container
           sx={{
             textAlign: "center",
@@ -141,7 +139,7 @@ const HRDashboard = () => {
           </TableContainer>
         )}
       </Container>
-      </div>
+      </Box>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { selectUser } from "../redux/authSlice";
-import { Typography, Button, Container, TextField } from "@mui/material";
+import { Typography, Button, Container, TextField, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import axios from "axios";
@@ -69,8 +69,8 @@ const ExitQuestionnaire = () => {
   return (
     <>
       <Navbar />
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -111,7 +111,7 @@ const ExitQuestionnaire = () => {
           Submit
         </Button>
       </Container>
-      </div>
+      </Box>
     </>
   );
 };
