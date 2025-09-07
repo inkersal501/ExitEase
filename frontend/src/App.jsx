@@ -1,6 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "./redux/authSlice";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; 
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
@@ -8,12 +6,15 @@ import HRDashboard from "./pages/HRDashboard";
 import ViewExitResponse from "./pages/ViewExitResponse";
 import ExitQuestionnaire from "./pages/ExitQuestionnaire";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
+import useAuth from "./context/useAuth";
 
 const App = () => {
-  const user = useSelector(selectUser);
+  const { user } = useAuth().getUser; 
 
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={!user ? <LoginPage /> : (user.role === "HR" ? <Navigate to="/hr-dashboard" /> : <Navigate to="/dashboard" />)} />
         <Route path="/register" element={<RegisterPage />} />

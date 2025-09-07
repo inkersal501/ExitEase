@@ -1,18 +1,16 @@
-import { useSelector } from "react-redux";
-import { selectUser } from "../redux/authSlice";
-import { Typography, Button, Container, TextField, Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import { useState, useEffect } from "react";
+import useAuth from "../context/useAuth";
+import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
 import { API_URL } from "../config";
+import { Typography, Button, Container, TextField, Box } from "@mui/material";
 
 const ExitQuestionnaire = () => {
-  
-  const user = useSelector(selectUser);
+
   const navigate = useNavigate();
   const [resignationId, setResignationId] = useState("");
+  const { user } = useAuth().getUser; 
 
   const [responses, setResponses] = useState([
     { questionText: "What prompted you to resign?", response: "" },
@@ -21,7 +19,7 @@ const ExitQuestionnaire = () => {
     { questionText: "Would you consider working with us again?", response: "" },
   ]);
 
-  if (!user || !localStorage.getItem("resignationId")) {
+  if (!user) {
     navigate("/"); 
   }
 
@@ -38,8 +36,7 @@ const ExitQuestionnaire = () => {
         { responses, resignationId },
         { headers: { Authorization: `${user.token}` } }
       );
-      toast.success("Exit interview submitted successfully!");
-      localStorage.removeItem("resignationId");
+      toast.success("Exit interview submitted successfully!"); 
       navigate("/dashboard");
     } catch (error) {
       toast.error(error.response.data.message);
@@ -67,8 +64,7 @@ const ExitQuestionnaire = () => {
   }, []);
   
   return (
-    <>
-      <Navbar />
+    <> 
       <Box
         sx={{
           display: "flex",

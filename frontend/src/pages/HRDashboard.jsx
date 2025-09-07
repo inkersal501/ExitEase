@@ -1,22 +1,22 @@
-import { useSelector } from "react-redux";
-import { selectUser } from "../redux/authSlice";
-import { Typography, Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import useAuth from "../context/useAuth"; 
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
 import { API_URL } from "../config";
+import { Typography, Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
 
 const HRDashboard = () => {
     
-  const user = useSelector(selectUser);
+  const { user } = useAuth().getUser; 
   const navigate = useNavigate();
   const [resignations, setResignations] = useState([]);
 
-  if (!user || user.role !== "HR") {
-    navigate("/"); 
-  }
+  useEffect(()=> {
+    if (!user || user.role !== "HR") {
+      navigate("/"); 
+    }
+  }, [user]);
 
   useEffect(() => {
 
@@ -47,6 +47,7 @@ const HRDashboard = () => {
         if(res._id === resignationId){
           res.status = approved ? "Approved" : "Rejected";
         }
+        return res;
       })
       setResignations(updated);
     } catch (error) {
@@ -63,8 +64,7 @@ const HRDashboard = () => {
   };
 
   return (
-    <>
-      <Navbar />
+   
       <Box
         sx={{
           display: "flex",
@@ -140,7 +140,7 @@ const HRDashboard = () => {
         )}
       </Container>
       </Box>
-    </>
+ 
   );
 };
 

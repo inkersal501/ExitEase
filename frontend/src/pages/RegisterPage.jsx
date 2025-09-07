@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, TextField, Button, Typography, Box } from "@mui/material";
-import Navbar from "../components/Navbar";
+import { Card, CardContent, TextField, Button, Typography, Box } from "@mui/material"; 
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -38,8 +37,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <> 
       <Box
         sx={{
           display: "flex",

@@ -1,17 +1,14 @@
-import { useSelector, useDispatch } from "react-redux";
-import { selectUser, updateResignationStatus } from "../redux/authSlice";
-import { Typography, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+import useAuth from "../context/useAuth"; 
 import axios from "axios";
 import { toast } from "react-toastify";
 import { API_URL } from "../config";
- 
+import { Typography, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box } from "@mui/material";
+
 const EmployeeDashboard = () => {
-  const user = useSelector(selectUser);
+
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [lwd, setLwd] = useState("");
   const [reason, setReason] = useState("");
@@ -19,6 +16,9 @@ const EmployeeDashboard = () => {
   const [resignSubmitted, setResignSubmitted] = useState(false);
   const [resignStatus, setResignStatus] = useState("");
 
+  const { getUser, updateResignationStatus } = useAuth();
+  const { user } = getUser;  
+  
   useEffect(() =>{ 
     if (!user) {
       navigate("/"); 
@@ -71,12 +71,10 @@ const EmployeeDashboard = () => {
 
         if(response.data.submitted){
           setResignSubmitted(true);
-          setResignStatus(response.data.status);
-          localStorage.setItem("resignationId", response.data.resignationId);
-          dispatch(updateResignationStatus(response.data.resignationId));
-        }else {
-          localStorage.removeItem("resignationId");
-          dispatch(updateResignationStatus(""));
+          setResignStatus(response.data.status); 
+          updateResignationStatus(response.data.resignationId);
+        }else { 
+          updateResignationStatus("");
         }
 
       } catch (error) {
@@ -88,8 +86,7 @@ const EmployeeDashboard = () => {
   }, []);
 
   return (
-    <>
-      <Navbar />
+    <> 
       <Box
         sx={{
           display: "flex",

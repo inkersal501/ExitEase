@@ -1,16 +1,15 @@
-import { AppBar, Toolbar, Typography, Button, Avatar, Box, Menu, MenuItem } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUser, logout } from "../redux/authSlice";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../context/useAuth";
+import { AppBar, Toolbar, Typography, Button, Avatar, Box, Menu, MenuItem } from "@mui/material";
 
 const Navbar = () => {
-
-  const dispatch = useDispatch();
+ 
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const { getUser, logout } = useAuth();
+  const { user } = getUser;
+  
   const handleOpenMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -20,8 +19,8 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
+    if(logout())
+      navigate("/");
   };
 
   return (

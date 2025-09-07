@@ -1,18 +1,16 @@
 import { useState } from "react";
-import { Card, CardContent, TextField, Button, Typography, Box } from "@mui/material";
-import Navbar from "../components/Navbar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
+import useAuth from "../context/useAuth";
 import axios from "axios";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { login } from "../redux/authSlice";
+import { toast } from "react-toastify"; 
 import { API_URL } from "../config";
+import { Card, CardContent, TextField, Button, Typography, Box } from "@mui/material";
 
 const LoginPage = () => {
   
   const [form, setForm] = useState({ email: "", password: "" });
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const {login} = useAuth(); 
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,9 +28,8 @@ const LoginPage = () => {
     try {
       const response = await axios.post(`${API_URL}/auth/login`, form);
       if (response.status === 200) {
-        const { token, role, username } = response.data;
-        localStorage.setItem("token", token);
-        dispatch(login({ token, role, username }));
+        const { token, role, username } = response.data; 
+        login({ token, role, username });
         toast.success("Login successful!");
 
         if (role === "HR") {
@@ -47,8 +44,7 @@ const LoginPage = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <> 
       <Box
         sx={{
           display: "flex",

@@ -1,11 +1,9 @@
-import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../redux/authSlice";
+import { Navigate } from "react-router-dom"; 
+import useAuth from "../context/useAuth";
 
 // eslint-disable-next-line react/prop-types
-const ProtectedRoute = ({ children, allowedRoles }) => {
-  const user = useSelector(selectUser);
-
+const ProtectedRoute = ({ children, allowedRoles }) => { 
+  const { user } = useAuth().getUser; 
   if (!user) {
     return <Navigate to="/" />;
   }
