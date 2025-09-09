@@ -9,7 +9,7 @@ const verifyCallback = (req, resolve, reject) => (err, user, info) => {
     }
 }; 
 
-const auth = async (req, res, next) => {
+const authJWT = async (req, res, next) => {
     return new Promise((resolve, reject) => {
         passport.authenticate(
         "jwt",
@@ -20,5 +20,14 @@ const auth = async (req, res, next) => {
     .then(() => next())
     .catch((err) => next(err));
 }; 
+
+const auth = async (req, res, next) =>  {
+    if(req.session.userId) {
+        next();
+    }else{
+        res.redirect("/");
+    }
+};
+
 
 module.exports = {auth};

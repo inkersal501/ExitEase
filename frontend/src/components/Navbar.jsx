@@ -2,6 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../context/useAuth";
 import { AppBar, Toolbar, Typography, Button, Avatar, Box, Menu, MenuItem } from "@mui/material";
+import axios from "axios";
+import { API_URL } from "../config";
+import { toast } from "react-toastify";
+
+axios.defaults.baseURL = API_URL;
+axios.defaults.withCredentials = true;
 
 const Navbar = () => {
  
@@ -18,9 +24,15 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    if(logout())
-      navigate("/");
+  const handleLogout = async () => {
+    const logoutSession = await axios.post(`${API_URL}/user/logout`);
+    if(logoutSession.data.status){
+      toast.success(logoutSession.data.message);
+      if(logout())
+        navigate("/");
+    }else{
+      toast.error(logoutSession.data.message);
+    }
   };
 
   return (
@@ -53,9 +65,8 @@ const Navbar = () => {
               onClose={handleCloseMenu}
             >
               <MenuItem
-                onClick={() => {
-                  handleLogout();
-                  handleCloseMenu();
+                onClick={() => { 
+                  handleLogout();                  
                 }}
               >
                 Logout

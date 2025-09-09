@@ -1,7 +1,9 @@
 const checkAdmin = (req, res, next) => {
-    if(req.user.role !== "HR")
-        throw new Error("Unauthorized access");
-    next();
+    if(req.session.role === "HR"){
+        next();
+    }else{
+        redirect("/");    
+    }
 };
 
 module.exports = {checkAdmin};

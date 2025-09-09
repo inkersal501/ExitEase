@@ -28,8 +28,8 @@ const LoginPage = () => {
     try {
       const response = await axios.post(`${API_URL}/auth/login`, form);
       if (response.status === 200) {
-        const { token, role, username } = response.data; 
-        login({ token, role, username });
+        const { role, username } = response.data; 
+        login({ role, username });
         toast.success("Login successful!");
 
         if (role === "HR") {

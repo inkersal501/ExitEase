@@ -21,13 +21,16 @@ if (error) {
 }
 
 module.exports = { 
+  node_env : envVars.NODE_ENV,
   port: envVars.PORT,
   mongoose: {
     url: envVars.MONGODB_URI, 
   }, 
+  appURL : envVars.APP_URL,
   jwt: {
     secret: envVars.JWT_SECRET,
     accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
   },
   calendarific_api_key: envVars.CALENDARIFIC_API_KEY,
+  session_key: envVars.SESSION_KEY,
 };

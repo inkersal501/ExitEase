@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import { API_URL } from "../config";
 import { Typography, Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
 
+axios.defaults.baseURL = API_URL;
+axios.defaults.withCredentials = true;
+
 const HRDashboard = () => {
     
   const { user } = useAuth().getUser; 
@@ -16,31 +19,25 @@ const HRDashboard = () => {
     if (!user || user.role !== "HR") {
       navigate("/"); 
     }
+    //eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
 
     const fetchResignations = async () => {
       try {
-        const response = await axios.get(`${API_URL}/admin/resignations`, {
-          headers: { Authorization: `${user.token}` },
-        });
+        const response = await axios.get(`${API_URL}/admin/resignations`);
         setResignations(response.data.data);
       } catch (error) {
         toast.error(error.response.data.message);
       }
     };
-    fetchResignations();
-  //eslint-disable-next-line
+    fetchResignations(); 
   }, []);
 
   const handleDecision = async (resignationId, approved, lwd) => { 
     try {
-      await axios.put(
-        `${API_URL}/admin/conclude_resignation`,
-        { resignationId, approved, lwd },
-        { headers: { Authorization: `${user.token}` } }
-      );
+      await axios.put(`${API_URL}/admin/conclude_resignation`, { resignationId, approved, lwd });
 
       toast.success(approved ? "Resignation approved!" : "Resignation rejected!");
       const updated = resignations.map((res) => {

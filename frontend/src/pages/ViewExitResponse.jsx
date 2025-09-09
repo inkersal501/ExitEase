@@ -1,32 +1,30 @@
 import { useEffect, useState } from "react"; 
-import { useNavigate, useParams } from "react-router-dom"; 
-import useAuth from "../context/useAuth";
+import { useNavigate, useParams } from "react-router-dom";  
 import axios from "axios";
 import { toast } from "react-toastify";
 import { API_URL } from "../config";
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box } from "@mui/material";
 
+axios.defaults.baseURL = API_URL;
+axios.defaults.withCredentials = true;
+
 function ViewExitResponse() { 
 
   const navigate = useNavigate();  
   const { resignationId } = useParams(); 
-  const [resignation, setResignation] = useState({});
-  const { user } = useAuth().getUser; 
+  const [resignation, setResignation] = useState({}); 
    
   useEffect(() => {
     const fetchResponses = async () => {
       try {
-        const result = await axios.get(`${API_URL}/admin/exit_response/${resignationId}`, {
-          headers: { Authorization: `${user.token}` },
-        });
+        const result = await axios.get(`${API_URL}/admin/exit_response/${resignationId}`);
         setResignation(result.data);
       } catch (error) {
         toast.error(error.result.data.message);
       }
     };
-    fetchResponses();
-    //eslint-disable-next-line
-  }, []);  
+    fetchResponses(); 
+  }, [resignationId]);  
  
   return (
     <>    

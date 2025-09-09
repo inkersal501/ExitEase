@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import { API_URL } from "../config";
 import { Typography, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Box } from "@mui/material";
 
+axios.defaults.baseURL = API_URL;
+axios.defaults.withCredentials = true;
+
 const EmployeeDashboard = () => {
 
   const navigate = useNavigate();
@@ -43,11 +46,7 @@ const EmployeeDashboard = () => {
     }
 
     try {
-      const response = await axios.post(
-        `${API_URL}/user/resign`,
-        { lwd, reason },
-        { headers: { Authorization: `${user.token}` } }
-      );
+      const response = await axios.post(`${API_URL}/user/resign`, { lwd, reason });
 
       if (response.status === 200) {
         toast.success("Resignation submitted successfully!"); 
@@ -64,10 +63,7 @@ const EmployeeDashboard = () => {
   useEffect(() => {
     const checkResign = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/user/check-resign`,
-          { headers: { Authorization: `${user.token}` } }
-        );
+        const response = await axios.get(`${API_URL}/user/check-resign`);
 
         if(response.data.submitted){
           setResignSubmitted(true);

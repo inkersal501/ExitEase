@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import { API_URL } from "../config";
 import { Typography, Button, Container, TextField, Box } from "@mui/material";
 
+axios.defaults.baseURL = API_URL;
+axios.defaults.withCredentials = true;
+
 const ExitQuestionnaire = () => {
 
   const navigate = useNavigate();
@@ -19,9 +22,12 @@ const ExitQuestionnaire = () => {
     { questionText: "Would you consider working with us again?", response: "" },
   ]);
 
-  if (!user) {
-    navigate("/"); 
-  }
+  useEffect(() =>{ 
+    if (!user) {
+      navigate("/"); 
+    }
+    //eslint-disable-next-line
+  }, [user]);
 
   const handleChange = (index, value) => {
     const updatedResponses = [...responses];
@@ -31,11 +37,7 @@ const ExitQuestionnaire = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post(
-        `${API_URL}/user/responses`,
-        { responses, resignationId },
-        { headers: { Authorization: `${user.token}` } }
-      );
+      await axios.post(`${API_URL}/user/responses`, { responses, resignationId });
       toast.success("Exit interview submitted successfully!"); 
       navigate("/dashboard");
     } catch (error) {
@@ -46,10 +48,7 @@ const ExitQuestionnaire = () => {
   useEffect(() => {
     const checkResign = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/user/check-resign`,
-          { headers: { Authorization: `${user.token}` } }
-        );
+        const response = await axios.get(`${API_URL}/user/check-resign`);
 
         if(response.data.submitted){ 
           setResignationId(response.data.resignationId);
@@ -59,8 +58,7 @@ const ExitQuestionnaire = () => {
         console.log(error);
       }        
     };
-    checkResign();
-    //eslint-disable-next-line
+    checkResign(); 
   }, []);
   
   return (

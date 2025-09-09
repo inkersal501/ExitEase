@@ -1,5 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AuthContext from "./AuthContext";
+
+import axios from "axios";
+import { API_URL } from "../config";
+
+axios.defaults.baseURL = API_URL;
+axios.defaults.withCredentials = true;
 
 // eslint-disable-next-line react/prop-types
 function AuthProvider({ children }) {
@@ -7,22 +13,35 @@ function AuthProvider({ children }) {
     const [user, setUser] = useState(null);
     const [resignation, setResignation] = useState(null);
 
+    useEffect(() => {
+        async function fetchCurrentUser() {
+            try {
+                const response = await axios.get(`${API_URL}/user/me`);
+                return response.data;
+            } catch (err) {
+                console.log(err);
+                return null; 
+            }
+        }
+        fetchCurrentUser().then(data => {
+            setUser(data); 
+        });
+    }, []);
+    
     const login = (data) => {
-        setUser(data);
-        localStorage.setItem("user", JSON.stringify(data));
+        setUser(data); 
     };
 
     const logout = () => {
         setUser(null);
-        setResignation(null);
-        localStorage.removeItem("user");
+        setResignation(null); 
     };
 
     const updateResignationStatus = (data) => {
         setResignation(data);
     };
 
-    const getUser =  { user: user || JSON.parse(localStorage.getItem("user")), resignation };
+    const getUser =  { user, resignation };
 
     return (    
         <AuthContext.Provider value={{getUser, login, logout, updateResignationStatus}}>

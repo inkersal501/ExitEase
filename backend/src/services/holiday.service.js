@@ -12,7 +12,7 @@ const checkIfHoliday = async (date) => {
                 month: date.month() + 1,
             },
         });
-        console.log(response.data.response.holidays);
+        // console.log(response.data.response.holidays);
         const holidays = response.data.response.holidays;
         return holidays.length > 0; 
     } catch (error) {

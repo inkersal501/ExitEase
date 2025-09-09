@@ -13,7 +13,7 @@ const register = async (req) => {
 
 const resign = async (req) => {
   // console.log(req.user);
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.session.userId);
   const {lwd, reason} = req.body; 
  
   const lastWorkingDay = moment(lwd, "YYYY-MM-DD");

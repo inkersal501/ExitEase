@@ -1,4 +1,4 @@
-const {authService, userService, tokenService} = require("../services"); 
+const { authService, userService } = require("../services"); 
 
 const register = async (req, res) => {
     try {
@@ -17,9 +17,18 @@ const login = async (req, res) => {
     else{
         try {
             const user = await authService.login(email, password);
-            const token = await tokenService.generateAuthTokens(user);
+            // const token = await tokenService.generateAuthTokens(user);
             const {role, username} = user;
-            res.status(200).send({role, username, token});
+            req.session.userId = user._id;
+            req.session.username = username; 
+            req.session.role = role; 
+            req.session.save((err) => {
+                if (err) {
+                    console.error("Session save error:", err);
+                    return res.status(500).send({ message: "Login failed" });
+                }
+                res.json({ role, username });
+            });
         } catch (error) { 
             res.status(500).send({"message": error.message});
         }    

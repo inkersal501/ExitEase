@@ -3,7 +3,7 @@ const {adminService} = require("../services");
 const getResignations = async (req, res) => { 
     try {
         const resignations = await adminService.getResignations();
-        res.status(200).send(resignations);
+        res.json(resignations);
     } catch (error) {
         res.status(500).send({"message": error.message});
     } 
